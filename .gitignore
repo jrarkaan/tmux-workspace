@@ -19,3 +19,4 @@ coverage.out
 tmp/
 twx
 tmux-workspace
+.codex/
