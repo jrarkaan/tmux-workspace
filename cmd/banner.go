@@ -1,0 +1,13 @@
+package cmd
+
+func banner() string {
+	return ` 
+████████╗██╗    ██╗██╗  ██╗
+╚══██╔══╝██║    ██║╚██╗██╔╝
+   ██║   ██║ █╗ ██║ ╚███╔╝
+   ██║   ██║███╗██║ ██╔██╗
+   ██║   ╚███╔███╔╝██╔╝ ██╗
+   ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝
+
+twx :: declarative tmux workspace manager`
+}

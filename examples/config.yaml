@@ -8,6 +8,8 @@ defaults:
 workspaces:
   backend-dev:
     root: ~/App/backend
+    env:
+      APP_ENV: development
     windows:
       - name: overview
         command: clear; pwd; git status
@@ -31,7 +33,7 @@ workspaces:
       - name: gemini-review
       - name: gemini-impl
       - name: dev-server
-        command: echo 'Run: npm run dev -- --host 0.0.0.0'
+        command: "echo 'Run: npm run dev -- --host 0.0.0.0'"
       - name: test-watch
       - name: runtime-logs
       - name: git-diff

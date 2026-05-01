@@ -26,12 +26,16 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 The project is being developed in phases.
 
-Phase 1–2 has been implemented:
+Phase 3 config loader and workspace listing has been implemented:
 
 - Go module setup
 - Cobra CLI skeleton
 - `twx version`
 - `twx doctor`
+- `twx config path`
+- `twx config validate`
+- `twx list`
+- YAML config structs, loading, and validation
 - Basic docs
 - Examples placeholder
 - Local install script
@@ -46,12 +50,13 @@ Do not assume later-phase features are already implemented unless the code exist
 `twx` should eventually support:
 
 ```bash
+twx --help
 twx doctor
 twx version
 twx config path
 twx config validate
-twx init <workspace>
 twx list
+twx init <workspace>
 twx start <workspace>
 twx attach <workspace>
 twx kill <workspace>
@@ -70,6 +75,13 @@ The main source of truth should be:
 ```
 
 The CLI should create and manage tmux sessions and windows from that config.
+
+Near-term roadmap:
+
+1. tmux client wrapper
+2. `twx start <workspace>`
+3. `twx attach <workspace>`
+4. Lifecycle commands: kill, restart, sessions, windows
 
 ---
 
@@ -102,6 +114,8 @@ Be careful with commands that modify user state. Do not modify user files unless
 | `twx init` | Yes — creates/updates config file |
 | `twx add-window` | Yes — updates config file |
 | `twx tpm install` | Yes — may modify `~/.tmux.conf`, must back it up first |
+
+`twx list` and `twx config validate` must never create tmux sessions or modify user files.
 
 When writing files:
 

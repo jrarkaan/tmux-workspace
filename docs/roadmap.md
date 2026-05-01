@@ -6,15 +6,29 @@
 - Cobra CLI skeleton.
 - `twx version`.
 - `twx doctor`.
+- `twx config path`.
+- `twx config validate`.
+- `twx list`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
 
+## Phase 3 Implemented
+
+- YAML config structs.
+- Config loading from disk.
+- Config validation with aggregated errors.
+- Read-only workspace listing.
+
+## Next Phase
+
+- tmux client wrapper.
+- `twx start <workspace>`.
+- `twx attach <workspace>`.
+- Lifecycle commands: kill, restart, sessions, windows.
+
 ## Later Ideas
 
-- Config loader.
-- Workspace list.
-- tmux start, attach, kill, and restart commands.
 - TPM status and install.
 - Interactive workspace wizard.
 - Pane layout support.

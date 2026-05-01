@@ -21,6 +21,16 @@ if ! grep -Fxq "$PATH_LINE" "$BASHRC"; then
 fi
 
 echo
+cat <<'EOF'
+ _______      __
+/_  __/ | /| / /_  __
+ / /  | |/ |/ /| |/_/
+/ /   |__/|__/ _>  <
+/_/             /_/|_|
+
+twx :: declarative tmux workspace manager
+EOF
+echo
 echo "Installed twx to $BIN_DIR/twx"
 echo
 echo "Next steps:"

@@ -22,7 +22,9 @@ func newRootCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "twx",
 		Short: "Declarative tmux workspace manager for Ubuntu",
-		Long: `twx manages tmux workspaces declaratively.
+		Long: banner() + `
+
+twx manages tmux workspaces declaratively.
 
 It is designed for Ubuntu users who want to replace repetitive tmux
 session and window shell scripts with a clear YAML configuration.`,
@@ -31,6 +33,8 @@ session and window shell scripts with a clear YAML configuration.`,
 		},
 	}
 
+	rootCmd.SilenceErrors = true
+	rootCmd.SilenceUsage = true
 	rootCmd.PersistentFlags().StringVar(
 		&configPath,
 		"config",
@@ -40,6 +44,8 @@ session and window shell scripts with a clear YAML configuration.`,
 
 	rootCmd.AddCommand(newVersionCommand())
 	rootCmd.AddCommand(newDoctorCommand())
+	rootCmd.AddCommand(newConfigCommand())
+	rootCmd.AddCommand(newListCommand())
 
 	return rootCmd
 }

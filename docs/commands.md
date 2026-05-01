@@ -1,28 +1,33 @@
 # Commands
 
-Many commands are planned and not implemented yet. Phase 1-2 includes only the system commands needed to establish the CLI foundation.
+Many commands are planned and not implemented yet. Implemented commands are marked below.
 
 ## System
 
-- `twx doctor`
-- `twx version`
+- `twx doctor` - implemented
+- `twx version` - implemented
+
+## Config
+
+- `twx config path` - implemented
+- `twx config validate` - implemented
 
 ## Workspace
 
-- `twx init <workspace>`
-- `twx list`
-- `twx start <workspace>`
-- `twx attach <workspace>`
-- `twx kill <workspace>`
-- `twx restart <workspace>`
-- `twx windows <workspace>`
+- `twx list` - implemented
+- `twx init <workspace>` - planned
+- `twx start <workspace>` - planned
+- `twx attach <workspace>` - planned
+- `twx kill <workspace>` - planned
+- `twx restart <workspace>` - planned
+- `twx windows <workspace>` - planned
 
 ## Window Management
 
-- `twx add-window <workspace> <window>`
-- `twx remove-window <workspace> <window>`
+- `twx add-window <workspace> <window>` - planned
+- `twx remove-window <workspace> <window>` - planned
 
 ## TPM
 
-- `twx tpm status`
-- `twx tpm install`
+- `twx tpm status` - planned
+- `twx tpm install` - planned

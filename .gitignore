@@ -14,9 +14,10 @@ coverage.out
 .DS_Store
 .idea/
 .vscode/
+.codex
+.codex/
 
 # Temporary
 tmp/
 twx
 tmux-workspace
-.codex/
