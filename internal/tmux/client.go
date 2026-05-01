@@ -58,7 +58,7 @@ func (c *Client) HasSession(name string) (bool, error) {
 			return false, nil
 		}
 
-		return false, fmt.Errorf("check tmux session %q: %w", name, err)
+		return false, commandError(fmt.Sprintf("check tmux session %q", name), output, err)
 	}
 
 	return true, nil
@@ -75,7 +75,7 @@ func (c *Client) ListSessions() ([]string, error) {
 			return []string{}, nil
 		}
 
-		return nil, fmt.Errorf("list tmux sessions: %w", err)
+		return nil, commandError("list tmux sessions", output, err)
 	}
 
 	return parseLines(output), nil
@@ -92,7 +92,7 @@ func (c *Client) ListWindows(session string) ([]WindowInfo, error) {
 			return nil, fmt.Errorf("%w: %s", ErrSessionNotFound, session)
 		}
 
-		return nil, fmt.Errorf("list tmux windows for session %q: %w", session, err)
+		return nil, commandError(fmt.Sprintf("list tmux windows for session %q", session), output, err)
 	}
 
 	windows := make([]WindowInfo, 0)
@@ -109,6 +109,84 @@ func (c *Client) ListWindows(session string) ([]WindowInfo, error) {
 	}
 
 	return windows, nil
+}
+
+func (c *Client) NewSession(session string, window string, root string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "new-session", "-d", "-s", session, "-n", window, "-c", root)
+	if err != nil {
+		return commandError(fmt.Sprintf("create tmux session %q", session), output, err)
+	}
+
+	return nil
+}
+
+func (c *Client) NewWindow(session string, window string, root string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "new-window", "-t", session, "-n", window, "-c", root)
+	if err != nil {
+		return commandError(fmt.Sprintf("create tmux window %q in session %q", window, session), output, err)
+	}
+
+	return nil
+}
+
+func (c *Client) SendKeys(target string, command string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "send-keys", "-t", target, command, "C-m")
+	if err != nil {
+		return commandError(fmt.Sprintf("send command to tmux target %q", target), output, err)
+	}
+
+	return nil
+}
+
+func (c *Client) SelectWindow(session string, window string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "select-window", "-t", targetWindow(session, window))
+	if err != nil {
+		return commandError(fmt.Sprintf("select tmux window %q in session %q", window, session), output, err)
+	}
+
+	return nil
+}
+
+func (c *Client) Attach(session string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "attach", "-t", session)
+	if err != nil {
+		return commandError(fmt.Sprintf("attach tmux session %q", session), output, err)
+	}
+
+	return nil
+}
+
+func (c *Client) KillSession(session string) error {
+	if !c.IsInstalled() {
+		return ErrTmuxNotInstalled
+	}
+
+	output, err := c.runner.Run("tmux", "kill-session", "-t", session)
+	if err != nil {
+		return commandError(fmt.Sprintf("kill tmux session %q", session), output, err)
+	}
+
+	return nil
 }
 
 func parseLines(output []byte) []string {
@@ -156,10 +234,23 @@ func errorText(output []byte, err error) string {
 	return strings.TrimSpace(text)
 }
 
+func commandError(operation string, output []byte, err error) error {
+	detail := strings.TrimSpace(string(output))
+	if detail == "" {
+		return fmt.Errorf("%s: %w", operation, err)
+	}
+
+	return fmt.Errorf("%s: %s: %w", operation, detail, err)
+}
+
 func IsTmuxNotInstalled(err error) bool {
 	return errors.Is(err, ErrTmuxNotInstalled)
 }
 
 func IsSessionNotFound(err error) bool {
 	return errors.Is(err, ErrSessionNotFound)
+}
+
+func targetWindow(session string, window string) string {
+	return session + ":" + window
 }

@@ -11,6 +11,7 @@
 - `twx list`.
 - `twx sessions`.
 - `twx windows <session>`.
+- `twx start <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
@@ -28,12 +29,19 @@
 - Read-only active session inspection.
 - Read-only window inspection for an existing tmux session.
 
-## Next Phase
+## Phase 6 Implemented
 
 - `twx start <workspace>`.
+- Workspace session/window creation from YAML config.
+- `--no-attach` support.
+- `--force` session recreation.
+
+## Next Phase
+
 - `twx attach <workspace>`.
 - `twx kill <workspace>`.
 - `twx restart <workspace>`.
+- Config mutation commands.
 
 ## Later Ideas
 

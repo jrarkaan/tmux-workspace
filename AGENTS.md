@@ -26,7 +26,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 The project is being developed in phases.
 
-Phase 4-5 tmux client wrapper and read-only inspection commands have been implemented:
+Phase 6 `twx start <workspace>` has been implemented:
 
 - Go module setup
 - Cobra CLI skeleton
@@ -37,8 +37,10 @@ Phase 4-5 tmux client wrapper and read-only inspection commands have been implem
 - `twx list`
 - `twx sessions`
 - `twx windows <session>`
+- `twx start <workspace>`
 - YAML config structs, loading, and validation
 - Read-only tmux client wrapper
+- Workspace session/window creation from config
 - Basic docs
 - Examples placeholder
 - Local install script
@@ -61,8 +63,8 @@ twx config validate
 twx list
 twx sessions
 twx windows <session>
-twx init <workspace>
 twx start <workspace>
+twx init <workspace>
 twx attach <workspace>
 twx kill <workspace>
 twx restart <workspace>
@@ -83,10 +85,10 @@ The CLI should create and manage tmux sessions and windows from that config.
 
 Near-term roadmap:
 
-1. `twx start <workspace>`
-2. `twx attach <workspace>`
-3. Lifecycle commands: kill, restart
-4. Config mutation commands: init, add-window, remove-window
+1. `twx attach <workspace>`
+2. `twx kill <workspace>`
+3. `twx restart <workspace>`
+4. `twx init`/`add-window`/`remove-window`
 
 ---
 
@@ -118,12 +120,14 @@ Be careful with commands that modify user state. Do not modify user files unless
 | `twx config validate` | No |
 | `twx sessions` | No |
 | `twx windows <session>` | No |
+| `twx start <workspace>` | No config writes; may create tmux sessions/windows |
 | `twx init` | Yes — creates/updates config file |
 | `twx add-window` | Yes — updates config file |
 | `twx tpm install` | Yes — may modify `~/.tmux.conf`, must back it up first |
 
 `twx list` and `twx config validate` must never create tmux sessions or modify user files.
 Read-only tmux inspection commands must not create or modify tmux sessions.
+`twx start` is allowed to create tmux sessions/windows but must not modify config files or tmux config.
 
 When writing files:
 
@@ -228,7 +232,7 @@ Rules:
 
 ## Tmux Behavior Direction
 
-Future `twx start <workspace>` should:
+`twx start <workspace>`:
 
 1. Load config
 2. Resolve workspace
@@ -309,13 +313,11 @@ docs: update quick start
 
 Implement next phases in this order:
 
-1. Config loader and validator — `twx config path`, `twx config validate`
-2. `twx list`
-3. tmux client wrapper
-4. `twx start <workspace>`, `twx attach <workspace>`
-5. Lifecycle commands — `kill`, `restart`, `sessions`, `windows`
-6. Config mutation commands — `init`, `add-window`, `remove-window`
-7. TPM status/install
+1. `twx attach <workspace>`
+2. `twx kill <workspace>`
+3. `twx restart <workspace>`
+4. Config mutation commands — `init`, `add-window`, `remove-window`
+5. TPM status/install
 
 Do not skip directly to advanced features before config loading and start are stable.
 

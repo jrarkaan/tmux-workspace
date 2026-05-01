@@ -14,7 +14,7 @@ Development workspaces often start as useful tmux shell scripts and slowly turn 
 
 ## MVP Scope
 
-The current milestone establishes the project foundation, read-only config commands, and tmux inspection:
+The current milestone establishes the project foundation, config commands, tmux inspection, and workspace start:
 
 - Go module setup.
 - Cobra CLI skeleton.
@@ -25,11 +25,12 @@ The current milestone establishes the project foundation, read-only config comma
 - `twx list`.
 - `twx sessions`.
 - `twx windows <session>`.
+- `twx start <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
 
-Full workspace start, attach, tmux session creation, and TPM installation are planned for later phases.
+Workspace attach, kill, restart, config mutation, and TPM installation are planned for later phases.
 
 ## Development
 
@@ -45,6 +46,7 @@ go run . --config ./examples/config.yaml config validate
 go run . --config ./examples/config.yaml list
 go run . sessions
 go run . windows backend-dev
+go run . --config ./examples/config.yaml start backend-dev --no-attach
 ```
 
 ## Config Path
@@ -62,11 +64,14 @@ Use the included example config for local read-only checks:
 ./twx --config ./examples/config.yaml list
 ./twx sessions
 ./twx windows backend-dev
+./twx --config ./examples/config.yaml start backend-dev --no-attach
 ```
+
+`--no-attach` creates the tmux session without attaching. `--force` recreates an existing session from config.
 
 ## Future Roadmap
 
-Planned work includes tmux start and attach workflows, window management, TPM status and install helpers, pane layout support, an interactive workspace wizard, shell script import/export, and GitHub release binaries.
+Planned work includes tmux attach, kill, and restart workflows, window management, TPM status and install helpers, pane layout support, an interactive workspace wizard, shell script import/export, and GitHub release binaries.
 
 ## License
 
