@@ -1,0 +1,39 @@
+version: 1
+
+defaults:
+  attach: true
+  create_if_missing: true
+  base_index: 1
+
+workspaces:
+  backend-dev:
+    root: ~/App/backend
+    windows:
+      - name: overview
+        command: clear; pwd; git status
+      - name: codex-impl
+      - name: gemini-review
+      - name: gemini-impl
+      - name: test-watch
+        command: echo 'Run tests here'
+      - name: runtime-logs
+      - name: git-diff
+        command: git status
+      - name: db
+      - name: ssh
+
+  frontend-astro-blog:
+    root: ~/App/sofmante/frontend/astro-blog
+    windows:
+      - name: overview
+        command: clear; pwd; git status
+      - name: codex-impl
+      - name: gemini-review
+      - name: gemini-impl
+      - name: dev-server
+        command: echo 'Run: npm run dev -- --host 0.0.0.0'
+      - name: test-watch
+      - name: runtime-logs
+      - name: git-diff
+        command: git status
+      - name: ssh

@@ -1,0 +1,21 @@
+# Go
+/bin/
+/dist/
+*.test
+*.out
+coverage.out
+
+# Local config
+.env
+.env.*
+*.local
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Temporary
+tmp/
+twx
+tmux-workspace
