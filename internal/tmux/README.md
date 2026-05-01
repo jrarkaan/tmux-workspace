@@ -1,3 +1,5 @@
 # internal/tmux
 
-This package will contain tmux session, window, pane, and command execution logic in future phases.
+This package contains the read-only tmux client wrapper used by inspection commands.
+
+Future phases will extend it with session, window, pane, and command execution logic for workspace lifecycle commands.

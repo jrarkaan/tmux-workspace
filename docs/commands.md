@@ -15,12 +15,13 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 ## Workspace
 
 - `twx list` - implemented
+- `twx sessions` - implemented
+- `twx windows <session>` - implemented
 - `twx init <workspace>` - planned
 - `twx start <workspace>` - planned
 - `twx attach <workspace>` - planned
 - `twx kill <workspace>` - planned
 - `twx restart <workspace>` - planned
-- `twx windows <workspace>` - planned
 
 ## Window Management
 

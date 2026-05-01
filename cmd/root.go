@@ -46,6 +46,8 @@ session and window shell scripts with a clear YAML configuration.`,
 	rootCmd.AddCommand(newDoctorCommand())
 	rootCmd.AddCommand(newConfigCommand())
 	rootCmd.AddCommand(newListCommand())
+	rootCmd.AddCommand(newSessionsCommand())
+	rootCmd.AddCommand(newWindowsCommand())
 
 	return rootCmd
 }

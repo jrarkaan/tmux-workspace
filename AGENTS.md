@@ -26,7 +26,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 The project is being developed in phases.
 
-Phase 3 config loader and workspace listing has been implemented:
+Phase 4-5 tmux client wrapper and read-only inspection commands have been implemented:
 
 - Go module setup
 - Cobra CLI skeleton
@@ -35,7 +35,10 @@ Phase 3 config loader and workspace listing has been implemented:
 - `twx config path`
 - `twx config validate`
 - `twx list`
+- `twx sessions`
+- `twx windows <session>`
 - YAML config structs, loading, and validation
+- Read-only tmux client wrapper
 - Basic docs
 - Examples placeholder
 - Local install script
@@ -56,6 +59,8 @@ twx version
 twx config path
 twx config validate
 twx list
+twx sessions
+twx windows <session>
 twx init <workspace>
 twx start <workspace>
 twx attach <workspace>
@@ -78,10 +83,10 @@ The CLI should create and manage tmux sessions and windows from that config.
 
 Near-term roadmap:
 
-1. tmux client wrapper
-2. `twx start <workspace>`
-3. `twx attach <workspace>`
-4. Lifecycle commands: kill, restart, sessions, windows
+1. `twx start <workspace>`
+2. `twx attach <workspace>`
+3. Lifecycle commands: kill, restart
+4. Config mutation commands: init, add-window, remove-window
 
 ---
 
@@ -111,11 +116,14 @@ Be careful with commands that modify user state. Do not modify user files unless
 | `twx doctor` | No |
 | `twx list` | No |
 | `twx config validate` | No |
+| `twx sessions` | No |
+| `twx windows <session>` | No |
 | `twx init` | Yes — creates/updates config file |
 | `twx add-window` | Yes — updates config file |
 | `twx tpm install` | Yes — may modify `~/.tmux.conf`, must back it up first |
 
 `twx list` and `twx config validate` must never create tmux sessions or modify user files.
+Read-only tmux inspection commands must not create or modify tmux sessions.
 
 When writing files:
 

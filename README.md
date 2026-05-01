@@ -14,7 +14,7 @@ Development workspaces often start as useful tmux shell scripts and slowly turn 
 
 ## MVP Scope
 
-The current milestone establishes the project foundation and read-only config commands:
+The current milestone establishes the project foundation, read-only config commands, and tmux inspection:
 
 - Go module setup.
 - Cobra CLI skeleton.
@@ -23,6 +23,8 @@ The current milestone establishes the project foundation and read-only config co
 - `twx config path`.
 - `twx config validate`.
 - `twx list`.
+- `twx sessions`.
+- `twx windows <session>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
@@ -41,6 +43,8 @@ go run . doctor
 go run . config path
 go run . --config ./examples/config.yaml config validate
 go run . --config ./examples/config.yaml list
+go run . sessions
+go run . windows backend-dev
 ```
 
 ## Config Path
@@ -56,6 +60,8 @@ Use the included example config for local read-only checks:
 ```sh
 ./twx --config ./examples/config.yaml config validate
 ./twx --config ./examples/config.yaml list
+./twx sessions
+./twx windows backend-dev
 ```
 
 ## Future Roadmap

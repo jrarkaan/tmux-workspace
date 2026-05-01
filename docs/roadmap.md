@@ -9,6 +9,8 @@
 - `twx config path`.
 - `twx config validate`.
 - `twx list`.
+- `twx sessions`.
+- `twx windows <session>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
@@ -20,12 +22,18 @@
 - Config validation with aggregated errors.
 - Read-only workspace listing.
 
-## Next Phase
+## Phase 4-5 Implemented
 
 - tmux client wrapper.
+- Read-only active session inspection.
+- Read-only window inspection for an existing tmux session.
+
+## Next Phase
+
 - `twx start <workspace>`.
 - `twx attach <workspace>`.
-- Lifecycle commands: kill, restart, sessions, windows.
+- `twx kill <workspace>`.
+- `twx restart <workspace>`.
 
 ## Later Ideas
 
