@@ -14,11 +14,11 @@ type Defaults struct {
 
 type Workspace struct {
 	Root    string            `yaml:"root"`
-	Env     map[string]string `yaml:"env"`
+	Env     map[string]string `yaml:"env,omitempty"`
 	Windows []Window          `yaml:"windows"`
 }
 
 type Window struct {
 	Name    string `yaml:"name"`
-	Command string `yaml:"command"`
+	Command string `yaml:"command,omitempty"`
 }

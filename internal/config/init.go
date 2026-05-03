@@ -75,13 +75,9 @@ func InitConfig(path string, opts InitOptions) (InitResult, error) {
 			return result, nil
 		}
 
-		backupPath := backupConfigPath(resolvedPath, now(opts))
-		existingContent, err := os.ReadFile(resolvedPath)
+		backupPath, err := Backup(resolvedPath, now(opts))
 		if err != nil {
-			return result, fmt.Errorf("read existing config %s: %w", resolvedPath, err)
-		}
-		if err := os.WriteFile(backupPath, existingContent, 0o644); err != nil {
-			return result, fmt.Errorf("write config backup %s: %w", backupPath, err)
+			return result, err
 		}
 		result.BackupPath = backupPath
 	}

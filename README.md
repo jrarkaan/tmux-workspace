@@ -27,11 +27,14 @@ The current milestone establishes the project foundation, config commands, tmux 
 - `twx sessions`.
 - `twx windows <session>`.
 - `twx start <workspace>`.
+- `twx workspace add <workspace>`.
+- `twx workspace show <workspace>`.
+- `twx workspace remove <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
 
-Workspace attach, kill, restart, config mutation, and TPM installation are planned for later phases.
+Workspace attach, kill, restart, window mutation, and TPM installation are planned for later phases.
 
 ## Development
 
@@ -71,6 +74,24 @@ twx list
 `twx config init --print` prints the default config without writing files. `twx config init --force` backs up an existing config before overwriting it.
 
 `examples/config.yaml` is sample/development data only. It is not the default runtime config.
+
+## Quickstart
+
+```sh
+twx config init
+
+twx workspace add backend-dev \
+  --root ~/App/backend \
+  --windows overview,codex-impl,gemini-review,test-watch,runtime-logs,git-diff,db,ssh \
+  --env APP_ENV=development \
+  --command overview="clear; pwd; git status"
+
+twx list
+twx start backend-dev --no-attach
+twx windows backend-dev
+```
+
+Removing a workspace from config does not kill any running tmux session.
 
 Use the included example config for local checks:
 

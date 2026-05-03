@@ -21,12 +21,18 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 - `twx sessions` - implemented
 - `twx windows <session>` - implemented
 - `twx start <workspace>` - implemented
+- `twx workspace add <workspace>` - implemented
+  - `--root` sets the workspace root.
+  - `--windows` sets comma-separated window names.
+  - `--env` may be repeated as `KEY=VALUE`.
+  - `--command` may be repeated as `WINDOW=COMMAND`.
+  - `--force` replaces an existing workspace.
+- `twx workspace show <workspace>` - implemented
+- `twx workspace remove <workspace>` - implemented
+  - `--force` confirms removal from config.
 - `twx attach <workspace>` - planned
 - `twx kill <workspace>` - planned
 - `twx restart <workspace>` - planned
-- `twx workspace add <workspace>` - planned
-- `twx workspace remove <workspace>` - planned
-- `twx workspace show <workspace>` - planned
 
 ## Window Management
 

@@ -13,6 +13,9 @@
 - `twx sessions`.
 - `twx windows <session>`.
 - `twx start <workspace>`.
+- `twx workspace add <workspace>`.
+- `twx workspace remove <workspace>`.
+- `twx workspace show <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
@@ -45,18 +48,26 @@
 - `--force` backup before overwrite.
 - Empty workspace configs validate and list cleanly.
 
-## Next Phase
+## Phase 8 Implemented
 
 - `twx workspace add <workspace>`.
 - `twx workspace remove <workspace>`.
 - `twx workspace show <workspace>`.
-- Window add/remove commands.
-- Then `twx attach`, `twx kill`, and `twx restart`.
+- Safe config backups before workspace writes.
+- Workspace inspection without tmux side effects.
+
+## Next Phase
+
+- `twx attach <workspace>`.
+- `twx kill <workspace>`.
+- `twx restart <workspace>`.
 
 ## Later Ideas
 
+- Window add/remove commands.
 - TPM status and install.
 - Interactive workspace wizard.
 - Pane layout support.
 - Shell script import and export.
 - GitHub release binaries.
+- Release packaging.
