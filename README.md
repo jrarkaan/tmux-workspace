@@ -36,17 +36,20 @@ The current milestone establishes the project foundation, config commands, tmux 
 - `twx attach <workspace>`.
 - `twx kill <workspace>`.
 - `twx restart <workspace>`.
+- `twx tpm status`.
+- `twx tpm install`.
 - YAML config structs, loading, validation, writing, and mutation.
 - Read-only tmux client wrapper.
 - Workspace session/window creation from config.
 - Safe runtime config initialization with backup-on-force.
 - Workspace and window config mutation with backup-on-write.
 - Workspace lifecycle commands for attach, kill, and restart.
+- TPM detection and installation configuration management.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
 
-TPM installation is planned for later phases.
+Release packaging is planned for later phases.
 
 ## Development
 

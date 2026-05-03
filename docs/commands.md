@@ -46,5 +46,5 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 
 ## TPM
 
-- `twx tpm status` - planned
-- `twx tpm install` - planned
+- `twx tpm status` - implemented
+- `twx tpm install` - implemented

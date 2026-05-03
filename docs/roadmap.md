@@ -75,9 +75,20 @@
 - Safe config backups before window writes.
 - Window inspection and mutation without tmux side effects.
 
+## Phase 11 Implemented
+
+- `twx tpm status`.
+- `twx tpm install`.
+- Read-only TPM detection.
+- Idempotent cloning and config updating.
+
 ## Next Phase
 
-- TPM status and install.
+- Phase 12: Release Packaging
+  - version injection
+  - GitHub Releases
+  - `.deb` package
+  - Homebrew tap
 
 ## Later Ideas
 
