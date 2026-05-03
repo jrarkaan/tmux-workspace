@@ -105,3 +105,153 @@ func sampleWorkspace() Workspace {
 		},
 	}
 }
+
+func TestAddWindowAppendsWindow(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := AddWindow(cfg, "backend-dev", Window{Name: "jaeger", Command: "echo jaeger"}, false)
+	if err != nil {
+		t.Fatalf("AddWindow returned error: %v", err)
+	}
+
+	workspace := cfg.Workspaces["backend-dev"]
+	if len(workspace.Windows) != 3 {
+		t.Fatalf("expected 3 windows, got %d", len(workspace.Windows))
+	}
+
+	if workspace.Windows[2].Name != "jaeger" {
+		t.Fatalf("expected new window 'jaeger' at end, got %s", workspace.Windows[2].Name)
+	}
+}
+
+func TestAddWindowRejectsDuplicateWithoutForce(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := AddWindow(cfg, "backend-dev", Window{Name: "logs", Command: "tail"}, false)
+	if err == nil {
+		t.Fatal("AddWindow returned nil error for duplicate window")
+	}
+	if !strings.Contains(err.Error(), "window already exists") {
+		t.Fatalf("AddWindow error = %q, want duplicate detail", err.Error())
+	}
+}
+
+func TestAddWindowWithForceReplacesCommandAndPreservesPosition(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := AddWindow(cfg, "backend-dev", Window{Name: "overview", Command: "top"}, true)
+	if err != nil {
+		t.Fatalf("AddWindow returned error: %v", err)
+	}
+
+	workspace := cfg.Workspaces["backend-dev"]
+	if len(workspace.Windows) != 2 {
+		t.Fatalf("expected 2 windows, got %d", len(workspace.Windows))
+	}
+
+	if workspace.Windows[0].Name != "overview" || workspace.Windows[0].Command != "top" {
+		t.Fatalf("expected overview command 'top', got %+v", workspace.Windows[0])
+	}
+}
+
+func TestRemoveWindowRemovesExistingWindow(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := RemoveWindow(cfg, "backend-dev", "logs")
+	if err != nil {
+		t.Fatalf("RemoveWindow returned error: %v", err)
+	}
+
+	workspace := cfg.Workspaces["backend-dev"]
+	if len(workspace.Windows) != 1 {
+		t.Fatalf("expected 1 window, got %d", len(workspace.Windows))
+	}
+
+	if workspace.Windows[0].Name != "overview" {
+		t.Fatalf("expected overview to remain, got %s", workspace.Windows[0].Name)
+	}
+}
+
+func TestRemoveWindowErrorsIfWorkspaceMissing(t *testing.T) {
+	cfg := DefaultConfig()
+
+	err := RemoveWindow(cfg, "missing-workspace", "logs")
+	if err == nil {
+		t.Fatal("RemoveWindow returned nil error for missing workspace")
+	}
+}
+
+func TestRemoveWindowErrorsIfWindowMissing(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := RemoveWindow(cfg, "backend-dev", "missing-window")
+	if err == nil {
+		t.Fatal("RemoveWindow returned nil error for missing window")
+	}
+}
+
+func TestRemoveWindowErrorsIfRemovingLastWindow(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	// Remove one window to leave only one
+	_ = RemoveWindow(cfg, "backend-dev", "logs")
+
+	err := RemoveWindow(cfg, "backend-dev", "overview")
+	if err == nil {
+		t.Fatal("RemoveWindow returned nil error when removing last window")
+	}
+	if !strings.Contains(err.Error(), "cannot remove the last window") {
+		t.Fatalf("RemoveWindow error = %q, want 'cannot remove the last window' detail", err.Error())
+	}
+}
+
+func TestSetWindowCommandUpdatesCommand(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := SetWindowCommand(cfg, "backend-dev", "logs", "kubectl logs")
+	if err != nil {
+		t.Fatalf("SetWindowCommand returned error: %v", err)
+	}
+
+	workspace := cfg.Workspaces["backend-dev"]
+	if workspace.Windows[1].Name != "logs" || workspace.Windows[1].Command != "kubectl logs" {
+		t.Fatalf("expected logs command 'kubectl logs', got %+v", workspace.Windows[1])
+	}
+}
+
+func TestSetWindowCommandErrorsIfWorkspaceMissing(t *testing.T) {
+	cfg := DefaultConfig()
+
+	err := SetWindowCommand(cfg, "missing-workspace", "logs", "kubectl logs")
+	if err == nil {
+		t.Fatal("SetWindowCommand returned nil error for missing workspace")
+	}
+}
+
+func TestSetWindowCommandErrorsIfWindowMissing(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	err := SetWindowCommand(cfg, "backend-dev", "missing-window", "echo")
+	if err == nil {
+		t.Fatal("SetWindowCommand returned nil error for missing window")
+	}
+}
+
+func TestGetWindow(t *testing.T) {
+	cfg := configWithWorkspace("backend-dev")
+
+	win, ok := GetWindow(cfg, "backend-dev", "logs")
+	if !ok || win.Name != "logs" {
+		t.Fatalf("GetWindow failed to retrieve existing window")
+	}
+
+	_, ok = GetWindow(cfg, "backend-dev", "missing")
+	if ok {
+		t.Fatalf("GetWindow retrieved non-existent window")
+	}
+
+	_, ok = GetWindow(cfg, "missing-workspace", "logs")
+	if ok {
+		t.Fatalf("GetWindow retrieved from non-existent workspace")
+	}
+}

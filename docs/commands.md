@@ -37,8 +37,12 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 
 ## Window Management
 
-- `twx add-window <workspace> <window>` - planned
-- `twx remove-window <workspace> <window>` - planned
+- `twx window add <workspace> <window>` - implemented
+  - `--command` sets the initial command for the window.
+  - `--force` replaces an existing window.
+- `twx window remove <workspace> <window>` - implemented
+  - `--force` confirms removal from config.
+- `twx window set-command <workspace> <window> <command>` - implemented
 
 ## TPM
 
