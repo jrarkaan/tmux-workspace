@@ -24,7 +24,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 ## Current Phase
 
-The project is being developed in phases. Phase 9 (lifecycle commands) has been completed.
+The project is being developed in phases. Phase 10 (window mutation commands) has been completed.
 
 ### Implemented Features
 
@@ -45,11 +45,14 @@ The project is being developed in phases. Phase 9 (lifecycle commands) has been 
 - `twx attach <workspace>`
 - `twx kill <workspace>`
 - `twx restart <workspace>`
+- `twx window add <workspace> <window>`
+- `twx window remove <workspace> <window>`
+- `twx window set-command <workspace> <window> <command>`
 - YAML config structs, loading, validation, writing, and mutation
 - Read-only tmux client wrapper
 - Workspace session/window creation from config
 - Safe runtime config initialization with backup-on-force
-- Workspace config mutation with backup-on-write
+- Workspace and window config mutation with backup-on-write
 - Workspace lifecycle commands for attach, kill, and restart
 - Basic docs
 - Examples placeholder
@@ -105,14 +108,10 @@ The main source of truth is: `~/.config/twx/config.yaml`
 
 ### Near-Term Roadmap
 
-1. Window mutation commands
-   - `twx window add <workspace> <window>`
-   - `twx window remove <workspace> <window>`
-   - `twx window set-command <workspace> <window> <command>`
-2. TPM status/install
+1. TPM status/install
    - `twx tpm status`
    - `twx tpm install`
-3. Release packaging
+2. Release packaging
    - Version injection
    - GitHub Releases
    - `.deb` package
@@ -477,12 +476,6 @@ docs: update quick start
 ## Current Near-Term Roadmap
 
 Implement next phases in this order:
-
-### Phase 10: Window Mutation
-
-- `twx window add <workspace> <window>`
-- `twx window remove <workspace> <window>`
-- `twx window set-command <workspace> <window> <command>`
 
 ### Phase 11: TPM Management
 

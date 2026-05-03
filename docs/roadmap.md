@@ -67,9 +67,17 @@
 - `twx restart --no-attach`.
 - Lifecycle commands operate on tmux sessions without modifying config.
 
+## Phase 10 Implemented
+
+- `twx window add <workspace> <window>`.
+- `twx window remove <workspace> <window>`.
+- `twx window set-command <workspace> <window> <command>`.
+- Safe config backups before window writes.
+- Window inspection and mutation without tmux side effects.
+
 ## Next Phase
 
-- Window add/remove/set-command commands.
+- TPM status and install.
 
 ## Later Ideas
 
