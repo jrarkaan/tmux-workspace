@@ -3,18 +3,28 @@ package tmux
 import (
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 )
 
 type Runner interface {
 	Run(name string, args ...string) ([]byte, error)
+	RunInteractive(name string, args ...string) error
 }
 
 type ExecRunner struct{}
 
 func (r ExecRunner) Run(name string, args ...string) ([]byte, error) {
 	return exec.Command(name, args...).CombinedOutput()
+}
+
+func (r ExecRunner) RunInteractive(name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 type Client struct {
@@ -168,9 +178,9 @@ func (c *Client) Attach(session string) error {
 		return ErrTmuxNotInstalled
 	}
 
-	output, err := c.runner.Run("tmux", "attach", "-t", session)
+	err := c.runner.RunInteractive("tmux", "attach", "-t", session)
 	if err != nil {
-		return commandError(fmt.Sprintf("attach tmux session %q", session), output, err)
+		return commandError(fmt.Sprintf("attach tmux session %q", session), nil, err)
 	}
 
 	return nil
