@@ -24,7 +24,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 ## Current Phase
 
-The project is being developed in phases. Phase 11 (TPM Management commands) has been completed.
+The project is being developed in phases. Phase 12A (release packaging foundation) has been completed.
 
 ### Implemented Features
 
@@ -50,6 +50,11 @@ The project is being developed in phases. Phase 11 (TPM Management commands) has
 - `twx window set-command <workspace> <window> <command>`
 - `twx tpm status`
 - `twx tpm install`
+- Version metadata injection
+- GoReleaser config
+- GitHub tag release workflow
+- Linux amd64/arm64 artifacts
+- `.deb` package generation
 - YAML config structs, loading, validation, writing, and mutation
 - Read-only tmux client wrapper
 - Workspace session/window creation from config
@@ -110,11 +115,9 @@ The main source of truth is: `~/.config/twx/config.yaml`
 
 ### Near-Term Roadmap
 
-1. Release packaging
-   - Version injection
-   - GitHub Releases
-   - `.deb` package
-   - Homebrew tap
+1. Homebrew tap support
+2. Release polishing
+3. Shell completions
 
 ---
 
@@ -476,12 +479,11 @@ docs: update quick start
 
 Implement next phases in this order:
 
-### Phase 12: Release Packaging
+### Phase 12B: Homebrew and Polishing
 
-- Version injection
-- GitHub Releases
-- `.deb` package
-- Homebrew tap
+- Homebrew tap support
+- Release polishing
+- Shell completions
 
 Do not skip directly to advanced features before config loading, workspace mutation, start, and lifecycle commands are stable.
 
