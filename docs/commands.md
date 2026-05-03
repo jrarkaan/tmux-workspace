@@ -9,6 +9,9 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 
 ## Config
 
+- `twx config init` - implemented
+  - `--force` backs up and overwrites an existing config.
+  - `--print` prints the default config without writing files.
 - `twx config path` - implemented
 - `twx config validate` - implemented
 
@@ -18,10 +21,12 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 - `twx sessions` - implemented
 - `twx windows <session>` - implemented
 - `twx start <workspace>` - implemented
-- `twx init <workspace>` - planned
 - `twx attach <workspace>` - planned
 - `twx kill <workspace>` - planned
 - `twx restart <workspace>` - planned
+- `twx workspace add <workspace>` - planned
+- `twx workspace remove <workspace>` - planned
+- `twx workspace show <workspace>` - planned
 
 ## Window Management
 

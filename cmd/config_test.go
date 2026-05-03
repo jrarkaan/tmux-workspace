@@ -36,6 +36,89 @@ func TestConfigValidateCommand(t *testing.T) {
 	}
 }
 
+func TestConfigInitPrintCommand(t *testing.T) {
+	configFile := filepath.Join(t.TempDir(), "config.yaml")
+
+	output, err := executeCommand("--config", configFile, "config", "init", "--print")
+	if err != nil {
+		t.Fatalf("config init --print failed: %v", err)
+	}
+
+	for _, want := range []string{
+		"version: 1",
+		"workspaces: {}",
+	} {
+		if !strings.Contains(output, want) {
+			t.Fatalf("config init --print output = %q, want to contain %q", output, want)
+		}
+	}
+
+	if _, err := os.Stat(configFile); !os.IsNotExist(err) {
+		t.Fatalf("config init --print created file, stat err: %v", err)
+	}
+}
+
+func TestConfigInitCommandCreatesConfig(t *testing.T) {
+	configFile := filepath.Join(t.TempDir(), "config.yaml")
+
+	output, err := executeCommand("config", "init", "--config", configFile)
+	if err != nil {
+		t.Fatalf("config init failed: %v", err)
+	}
+
+	if !strings.Contains(output, "Config created: "+configFile) {
+		t.Fatalf("config init output = %q, want created message", output)
+	}
+	if _, err := os.Stat(configFile); err != nil {
+		t.Fatalf("config file was not created: %v", err)
+	}
+}
+
+func TestConfigInitCommandExistingWithoutForce(t *testing.T) {
+	configFile := filepath.Join(t.TempDir(), "config.yaml")
+	if _, err := executeCommand("--config", configFile, "config", "init"); err != nil {
+		t.Fatalf("initial config init failed: %v", err)
+	}
+
+	output, err := executeCommand("--config", configFile, "config", "init")
+	if err != nil {
+		t.Fatalf("second config init failed: %v", err)
+	}
+
+	for _, want := range []string{
+		"Config already exists: " + configFile,
+		"No changes made.",
+	} {
+		if !strings.Contains(output, want) {
+			t.Fatalf("second config init output = %q, want %q", output, want)
+		}
+	}
+}
+
+func TestConfigInitCommandForceCreatesBackup(t *testing.T) {
+	configFile := filepath.Join(t.TempDir(), "config.yaml")
+	if _, err := executeCommand("--config", configFile, "config", "init"); err != nil {
+		t.Fatalf("initial config init failed: %v", err)
+	}
+
+	output, err := executeCommand("--config", configFile, "config", "init", "--force")
+	if err != nil {
+		t.Fatalf("config init --force failed: %v", err)
+	}
+
+	if !strings.Contains(output, "Existing config backed up: "+configFile+".bak.") {
+		t.Fatalf("config init --force output = %q, want backup message", output)
+	}
+
+	matches, err := filepath.Glob(configFile + ".bak.*")
+	if err != nil {
+		t.Fatalf("glob backups: %v", err)
+	}
+	if len(matches) != 1 {
+		t.Fatalf("backup matches = %#v, want 1 backup", matches)
+	}
+}
+
 func executeCommand(args ...string) (string, error) {
 	rootCmd := newRootCommand()
 	var output bytes.Buffer

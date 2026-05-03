@@ -18,8 +18,58 @@ func newConfigCommand() *cobra.Command {
 
 	configCmd.AddCommand(newConfigPathCommand())
 	configCmd.AddCommand(newConfigValidateCommand())
+	configCmd.AddCommand(newConfigInitCommand())
 
 	return configCmd
+}
+
+func newConfigInitCommand() *cobra.Command {
+	var force bool
+	var printOnly bool
+
+	initCmd := &cobra.Command{
+		Use:   "init",
+		Short: "Create a default twx config file",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			path := config.ResolveConfigPath(configPath)
+
+			result, err := config.InitConfig(path, config.InitOptions{
+				Force: force,
+				Print: printOnly,
+			})
+			if err != nil {
+				return err
+			}
+
+			out := cmd.OutOrStdout()
+			if result.Printed {
+				content, err := config.DefaultConfigYAML()
+				if err != nil {
+					return err
+				}
+				fmt.Fprint(out, string(content))
+				return nil
+			}
+
+			if result.Existed && !result.Created {
+				fmt.Fprintf(out, "Config already exists: %s\n", result.Path)
+				fmt.Fprintln(out, "No changes made.")
+				return nil
+			}
+
+			if result.BackupPath != "" {
+				fmt.Fprintf(out, "Existing config backed up: %s\n", result.BackupPath)
+			}
+			fmt.Fprintf(out, "Config created: %s\n", result.Path)
+
+			return nil
+		},
+	}
+
+	initCmd.Flags().BoolVar(&force, "force", false, "overwrite existing config after creating a backup")
+	initCmd.Flags().BoolVar(&printOnly, "print", false, "print the default config without writing a file")
+
+	return initCmd
 }
 
 func newConfigPathCommand() *cobra.Command {

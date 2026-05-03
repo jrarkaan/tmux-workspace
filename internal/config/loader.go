@@ -23,6 +23,9 @@ func Load(path string) (*Config, error) {
 	if err := yaml.Unmarshal(content, &cfg); err != nil {
 		return nil, fmt.Errorf("invalid YAML in config file %s: %w", resolvedPath, err)
 	}
+	if cfg.Workspaces == nil {
+		cfg.Workspaces = map[string]Workspace{}
+	}
 
 	return &cfg, nil
 }

@@ -20,6 +20,7 @@ The current milestone establishes the project foundation, config commands, tmux 
 - Cobra CLI skeleton.
 - `twx version`.
 - `twx doctor`.
+- `twx config init`.
 - `twx config path`.
 - `twx config validate`.
 - `twx list`.
@@ -41,6 +42,7 @@ go mod tidy
 go run . --help
 go run . version
 go run . doctor
+go run . config init --print
 go run . config path
 go run . --config ./examples/config.yaml config validate
 go run . --config ./examples/config.yaml list
@@ -57,7 +59,20 @@ The default config path is:
 ~/.config/twx/config.yaml
 ```
 
-Use the included example config for local read-only checks:
+Initialize the runtime config with:
+
+```sh
+twx config init
+twx config path
+twx config validate
+twx list
+```
+
+`twx config init --print` prints the default config without writing files. `twx config init --force` backs up an existing config before overwriting it.
+
+`examples/config.yaml` is sample/development data only. It is not the default runtime config.
+
+Use the included example config for local checks:
 
 ```sh
 ./twx --config ./examples/config.yaml config validate

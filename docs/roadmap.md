@@ -6,6 +6,7 @@
 - Cobra CLI skeleton.
 - `twx version`.
 - `twx doctor`.
+- `twx config init`.
 - `twx config path`.
 - `twx config validate`.
 - `twx list`.
@@ -36,12 +37,21 @@
 - `--no-attach` support.
 - `--force` session recreation.
 
+## Phase 7 Implemented
+
+- `twx config init`.
+- Safe default runtime config creation at `~/.config/twx/config.yaml`.
+- `--print` support for previewing default config.
+- `--force` backup before overwrite.
+- Empty workspace configs validate and list cleanly.
+
 ## Next Phase
 
-- `twx attach <workspace>`.
-- `twx kill <workspace>`.
-- `twx restart <workspace>`.
-- Config mutation commands.
+- `twx workspace add <workspace>`.
+- `twx workspace remove <workspace>`.
+- `twx workspace show <workspace>`.
+- Window add/remove commands.
+- Then `twx attach`, `twx kill`, and `twx restart`.
 
 ## Later Ideas
 

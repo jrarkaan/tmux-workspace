@@ -11,6 +11,21 @@ func TestValidateValidConfig(t *testing.T) {
 	}
 }
 
+func TestValidateDefaultConfig(t *testing.T) {
+	if err := Validate(DefaultConfig()); err != nil {
+		t.Fatalf("Validate(DefaultConfig()) returned error: %v", err)
+	}
+}
+
+func TestValidateAllowsEmptyWorkspaces(t *testing.T) {
+	cfg := validConfig()
+	cfg.Workspaces = map[string]Workspace{}
+
+	if err := Validate(cfg); err != nil {
+		t.Fatalf("Validate returned error for empty workspaces: %v", err)
+	}
+}
+
 func TestValidateInvalidConfigs(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -28,13 +43,6 @@ func TestValidateInvalidConfigs(t *testing.T) {
 				cfg.Version = 2
 			}),
 			wantDetail: "version must be 1",
-		},
-		{
-			name: "empty workspaces",
-			cfg: mutateValidConfig(func(cfg *Config) {
-				cfg.Workspaces = map[string]Workspace{}
-			}),
-			wantDetail: "workspaces must not be empty",
 		},
 		{
 			name: "missing root",

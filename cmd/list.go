@@ -40,6 +40,12 @@ func printWorkspaceList(cmd *cobra.Command, cfg *config.Config) {
 	sort.Strings(names)
 
 	out := cmd.OutOrStdout()
+	if len(names) == 0 {
+		fmt.Fprintln(out, "No workspaces configured.")
+		fmt.Fprintln(out, "Add one by editing your config or using a future workspace command.")
+		return
+	}
+
 	fmt.Fprintln(out, "Available workspaces:")
 	fmt.Fprintln(out)
 

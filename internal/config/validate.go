@@ -32,10 +32,6 @@ func Validate(cfg *Config) error {
 		problems = append(problems, fmt.Sprintf("defaults.base_index must be 0 or 1, got %d", cfg.Defaults.BaseIndex))
 	}
 
-	if len(cfg.Workspaces) == 0 {
-		problems = append(problems, "workspaces must not be empty")
-	}
-
 	for name, workspace := range cfg.Workspaces {
 		if strings.TrimSpace(name) == "" {
 			problems = append(problems, "workspace name must not be empty")
