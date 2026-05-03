@@ -30,7 +30,7 @@ func TestVersionCommand(t *testing.T) {
 		t.Fatalf("version command failed: %v", err)
 	}
 
-	if got, want := output, "twx version dev\n"; got != want {
+	if got, want := output, "twx version dev\ncommit: none\ndate: unknown\n"; got != want {
 		t.Fatalf("version output = %q, want %q", got, want)
 	}
 }

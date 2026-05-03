@@ -82,13 +82,17 @@
 - Read-only TPM detection.
 - Idempotent cloning and config updating.
 
+## Phase 12A Implemented
+
+- Version metadata injection.
+- GoReleaser config for Linux amd64/arm64.
+- GitHub Actions release workflow.
+- `.deb` package generation.
+
 ## Next Phase
 
-- Phase 12: Release Packaging
-  - version injection
-  - GitHub Releases
-  - `.deb` package
-  - Homebrew tap
+- Homebrew tap.
+- Shell completions.
 
 ## Later Ideas
 

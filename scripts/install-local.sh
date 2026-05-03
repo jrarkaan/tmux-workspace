@@ -6,13 +6,16 @@ BIN_DIR="$HOME/bin"
 BASHRC="$HOME/.bashrc"
 PATH_LINE='export PATH="$HOME/bin:$PATH"'
 
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
 cd "$ROOT_DIR"
 
 echo "Building twx..."
-go build -o twx .
+go build -o "$TMP_DIR/twx" .
 
 mkdir -p "$BIN_DIR"
-cp twx "$BIN_DIR/twx"
+cp "$TMP_DIR/twx" "$BIN_DIR/twx"
 chmod +x "$BIN_DIR/twx"
 
 touch "$BASHRC"
@@ -22,11 +25,12 @@ fi
 
 echo
 cat <<'EOF'
- _______      __
-/_  __/ | /| / /_  __
- / /  | |/ |/ /| |/_/
-/ /   |__/|__/ _>  <
-/_/             /_/|_|
+████████╗██╗    ██╗██╗  ██╗
+╚══██╔══╝██║    ██║╚██╗██╔╝
+   ██║   ██║ █╗ ██║ ╚███╔╝
+   ██║   ██║███╗██║ ██╔██╗
+   ██║   ╚███╔███╔╝██╔╝ ██╗
+   ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝
 
 twx :: declarative tmux workspace manager
 EOF

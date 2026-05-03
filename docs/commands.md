@@ -5,7 +5,7 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 ## System
 
 - `twx doctor` - implemented
-- `twx version` - implemented
+- `twx version` - implemented (outputs multi-line version, commit, date)
 
 ## Config
 
