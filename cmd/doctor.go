@@ -19,9 +19,19 @@ func newDoctorCommand() *cobra.Command {
 			fmt.Fprintln(out, "twx doctor")
 			fmt.Fprintln(out)
 
+			var configMissing, tpmMissing, tmuxConfMissing bool
 			for _, result := range results {
 				if result.Warning {
 					hasWarnings = true
+				}
+				if result.Name == "Config file" && result.Status == "optional missing" {
+					configMissing = true
+				}
+				if result.Name == "TPM directory" && result.Status == "optional missing" {
+					tpmMissing = true
+				}
+				if result.Name == "tmux config" && result.Status == "optional missing" {
+					tmuxConfMissing = true
 				}
 				fmt.Fprintf(out, "%-16s : %-16s %s\n", result.Name, result.Status, result.Detail)
 			}
@@ -33,11 +43,19 @@ func newDoctorCommand() *cobra.Command {
 				fmt.Fprintln(out, "Result: ready")
 			}
 
-			fmt.Fprintln(out)
-			fmt.Fprintln(out, "Notes:")
-			fmt.Fprintln(out, "  - Missing TPM is okay. It is optional.")
-			fmt.Fprintln(out, "  - Missing config is okay before running twx init.")
-			fmt.Fprintln(out, "  - Missing ~/.tmux.conf is okay, but recommended for better tmux defaults.")
+			if configMissing || tpmMissing || tmuxConfMissing {
+				fmt.Fprintln(out)
+				fmt.Fprintln(out, "Notes:")
+				if tpmMissing {
+					fmt.Fprintln(out, "  - Missing TPM is okay. It is optional.")
+				}
+				if configMissing {
+					fmt.Fprintln(out, "  - Missing config is okay before running twx init.")
+				}
+				if tmuxConfMissing {
+					fmt.Fprintln(out, "  - Missing ~/.tmux.conf is okay, but recommended for better tmux defaults.")
+				}
+			}
 		},
 	}
 }

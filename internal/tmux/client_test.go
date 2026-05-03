@@ -34,6 +34,17 @@ func (r *fakeRunner) Run(name string, args ...string) ([]byte, error) {
 	return r.output, r.err
 }
 
+func (r *fakeRunner) RunInteractive(name string, args ...string) error {
+	r.calls = append(r.calls, fakeCall{name: name, args: args})
+	if len(r.responses) > 0 {
+		response := r.responses[0]
+		r.responses = r.responses[1:]
+		return response.err
+	}
+
+	return r.err
+}
+
 func TestListSessionsParsesSessionNames(t *testing.T) {
 	runner := &fakeRunner{output: []byte("backend-dev\nfrontend-astro-blog\n")}
 	client := newInstalledTestClient(runner)
