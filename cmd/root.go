@@ -51,6 +51,7 @@ session and window shell scripts with a clear YAML configuration.`,
 	rootCmd.AddCommand(newStartCommand())
 	rootCmd.AddCommand(newWorkspaceCommand())
 	rootCmd.AddCommand(newWindowCommand())
+	rootCmd.AddCommand(newTpmCommand())
 	rootCmd.AddCommand(newAttachCommand())
 	rootCmd.AddCommand(newKillCommand())
 	rootCmd.AddCommand(newRestartCommand())

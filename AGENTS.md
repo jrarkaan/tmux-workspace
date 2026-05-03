@@ -24,7 +24,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 ## Current Phase
 
-The project is being developed in phases. Phase 10 (window mutation commands) has been completed.
+The project is being developed in phases. Phase 11 (TPM Management commands) has been completed.
 
 ### Implemented Features
 
@@ -48,6 +48,8 @@ The project is being developed in phases. Phase 10 (window mutation commands) ha
 - `twx window add <workspace> <window>`
 - `twx window remove <workspace> <window>`
 - `twx window set-command <workspace> <window> <command>`
+- `twx tpm status`
+- `twx tpm install`
 - YAML config structs, loading, validation, writing, and mutation
 - Read-only tmux client wrapper
 - Workspace session/window creation from config
@@ -108,10 +110,7 @@ The main source of truth is: `~/.config/twx/config.yaml`
 
 ### Near-Term Roadmap
 
-1. TPM status/install
-   - `twx tpm status`
-   - `twx tpm install`
-2. Release packaging
+1. Release packaging
    - Version injection
    - GitHub Releases
    - `.deb` package
@@ -476,11 +475,6 @@ docs: update quick start
 ## Current Near-Term Roadmap
 
 Implement next phases in this order:
-
-### Phase 11: TPM Management
-
-- `twx tpm status`
-- `twx tpm install`
 
 ### Phase 12: Release Packaging
 
