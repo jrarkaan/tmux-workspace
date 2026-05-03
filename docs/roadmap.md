@@ -16,6 +16,9 @@
 - `twx workspace add <workspace>`.
 - `twx workspace remove <workspace>`.
 - `twx workspace show <workspace>`.
+- `twx attach <workspace>`.
+- `twx kill <workspace>`.
+- `twx restart <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
@@ -56,15 +59,20 @@
 - Safe config backups before workspace writes.
 - Workspace inspection without tmux side effects.
 
-## Next Phase
+## Phase 9 Implemented
 
 - `twx attach <workspace>`.
 - `twx kill <workspace>`.
 - `twx restart <workspace>`.
+- `twx restart --no-attach`.
+- Lifecycle commands operate on tmux sessions without modifying config.
+
+## Next Phase
+
+- Window add/remove/set-command commands.
 
 ## Later Ideas
 
-- Window add/remove commands.
 - TPM status and install.
 - Interactive workspace wizard.
 - Pane layout support.

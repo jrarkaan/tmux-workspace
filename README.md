@@ -30,11 +30,14 @@ The current milestone establishes the project foundation, config commands, tmux 
 - `twx workspace add <workspace>`.
 - `twx workspace show <workspace>`.
 - `twx workspace remove <workspace>`.
+- `twx attach <workspace>`.
+- `twx kill <workspace>`.
+- `twx restart <workspace>`.
 - Documentation and examples placeholders.
 - Local install script.
 - GitHub Actions CI.
 
-Workspace attach, kill, restart, window mutation, and TPM installation are planned for later phases.
+Window mutation and TPM installation are planned for later phases.
 
 ## Development
 
@@ -88,10 +91,14 @@ twx workspace add backend-dev \
 
 twx list
 twx start backend-dev --no-attach
+twx attach backend-dev
+twx restart backend-dev --no-attach
+twx kill backend-dev
 twx windows backend-dev
 ```
 
 Removing a workspace from config does not kill any running tmux session.
+`twx kill` kills the tmux session only. It does not remove the workspace from config; use `twx workspace remove <workspace> --force` to remove the config entry.
 
 Use the included example config for local checks:
 
@@ -103,11 +110,11 @@ Use the included example config for local checks:
 ./twx --config ./examples/config.yaml start backend-dev --no-attach
 ```
 
-`--no-attach` creates the tmux session without attaching. `--force` recreates an existing session from config.
+`--no-attach` creates or restarts the tmux session without attaching. `--force` recreates an existing session from config.
 
 ## Future Roadmap
 
-Planned work includes tmux attach, kill, and restart workflows, window management, TPM status and install helpers, pane layout support, an interactive workspace wizard, shell script import/export, and GitHub release binaries.
+Planned work includes window management, TPM status and install helpers, pane layout support, an interactive workspace wizard, shell script import/export, and GitHub release binaries.
 
 ## License
 

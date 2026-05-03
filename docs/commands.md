@@ -30,9 +30,10 @@ Many commands are planned and not implemented yet. Implemented commands are mark
 - `twx workspace show <workspace>` - implemented
 - `twx workspace remove <workspace>` - implemented
   - `--force` confirms removal from config.
-- `twx attach <workspace>` - planned
-- `twx kill <workspace>` - planned
-- `twx restart <workspace>` - planned
+- `twx attach <workspace>` - implemented
+- `twx kill <workspace>` - implemented
+- `twx restart <workspace>` - implemented
+  - `--no-attach` recreates the session without attaching.
 
 ## Window Management
 

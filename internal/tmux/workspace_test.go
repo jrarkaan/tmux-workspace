@@ -103,6 +103,86 @@ func TestStartWorkspaceExistingSessionWithoutForceDoesNotRecreate(t *testing.T) 
 	}
 }
 
+func TestRestartWorkspaceKillsExistingSessionThenRecreates(t *testing.T) {
+	runner := &fakeRunner{}
+	client := newInstalledTestClient(runner)
+	workspace := testWorkspace(t)
+
+	_, err := RestartWorkspace(client, "backend-dev", workspace, WorkspaceRestartOptions{NoAttach: true})
+	if err != nil {
+		t.Fatalf("RestartWorkspace returned error: %v", err)
+	}
+
+	wantPrefix := []fakeCall{
+		{name: "tmux", args: []string{"has-session", "-t", "backend-dev"}},
+		{name: "tmux", args: []string{"kill-session", "-t", "backend-dev"}},
+		{name: "tmux", args: []string{"new-session", "-d", "-s", "backend-dev", "-n", "overview", "-c", workspace.Root}},
+	}
+
+	if len(runner.calls) < len(wantPrefix) || !reflect.DeepEqual(runner.calls[:len(wantPrefix)], wantPrefix) {
+		t.Fatalf("call prefix = %#v, want %#v", runner.calls, wantPrefix)
+	}
+}
+
+func TestRestartWorkspaceWithoutExistingSessionCreatesWorkspace(t *testing.T) {
+	runner := &fakeRunner{
+		responses: []fakeResponse{
+			{output: []byte("can't find session: backend-dev"), err: errors.New("exit status 1")},
+		},
+	}
+	client := newInstalledTestClient(runner)
+	workspace := testWorkspace(t)
+
+	_, err := RestartWorkspace(client, "backend-dev", workspace, WorkspaceRestartOptions{NoAttach: true})
+	if err != nil {
+		t.Fatalf("RestartWorkspace returned error: %v", err)
+	}
+
+	wantPrefix := []fakeCall{
+		{name: "tmux", args: []string{"has-session", "-t", "backend-dev"}},
+		{name: "tmux", args: []string{"new-session", "-d", "-s", "backend-dev", "-n", "overview", "-c", workspace.Root}},
+	}
+
+	if len(runner.calls) < len(wantPrefix) || !reflect.DeepEqual(runner.calls[:len(wantPrefix)], wantPrefix) {
+		t.Fatalf("call prefix = %#v, want %#v", runner.calls, wantPrefix)
+	}
+}
+
+func TestRestartWorkspaceNoAttachDoesNotAttach(t *testing.T) {
+	runner := &fakeRunner{}
+	client := newInstalledTestClient(runner)
+
+	result, err := RestartWorkspace(client, "backend-dev", testWorkspace(t), WorkspaceRestartOptions{NoAttach: true})
+	if err != nil {
+		t.Fatalf("RestartWorkspace returned error: %v", err)
+	}
+
+	for _, call := range runner.calls {
+		if len(call.args) > 0 && call.args[0] == "attach" {
+			t.Fatalf("RestartWorkspace unexpectedly attached: %#v", runner.calls)
+		}
+	}
+	if result.Messages[len(result.Messages)-1] != "Skipping attach because --no-attach was provided." {
+		t.Fatalf("messages = %#v, want final no-attach message", result.Messages)
+	}
+}
+
+func TestRestartWorkspaceAttachesByDefault(t *testing.T) {
+	runner := &fakeRunner{}
+	client := newInstalledTestClient(runner)
+
+	_, err := RestartWorkspace(client, "backend-dev", testWorkspace(t), WorkspaceRestartOptions{})
+	if err != nil {
+		t.Fatalf("RestartWorkspace returned error: %v", err)
+	}
+
+	last := runner.calls[len(runner.calls)-1]
+	want := fakeCall{name: "tmux", args: []string{"attach", "-t", "backend-dev"}}
+	if !reflect.DeepEqual(last, want) {
+		t.Fatalf("last call = %#v, want %#v", last, want)
+	}
+}
+
 func testWorkspace(t *testing.T) config.Workspace {
 	t.Helper()
 

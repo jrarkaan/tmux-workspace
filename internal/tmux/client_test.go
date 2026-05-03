@@ -184,6 +184,13 @@ func TestClientMutationCommandsBuildExpectedArgs(t *testing.T) {
 			want: fakeCall{name: "tmux", args: []string{"select-window", "-t", "backend-dev:overview"}},
 		},
 		{
+			name: "attach",
+			run: func(client *Client) error {
+				return client.Attach("backend-dev")
+			},
+			want: fakeCall{name: "tmux", args: []string{"attach", "-t", "backend-dev"}},
+		},
+		{
 			name: "kill session",
 			run: func(client *Client) error {
 				return client.KillSession("backend-dev")

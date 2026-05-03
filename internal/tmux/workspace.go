@@ -19,6 +19,11 @@ type WorkspaceStartResult struct {
 	Messages []string
 }
 
+type WorkspaceRestartOptions struct {
+	NoAttach  bool
+	OnMessage func(string)
+}
+
 func StartWorkspace(client *Client, name string, workspace config.Workspace, opts WorkspaceStartOptions) (*WorkspaceStartResult, error) {
 	result := &WorkspaceStartResult{}
 
@@ -76,6 +81,29 @@ func StartWorkspace(client *Client, name string, workspace config.Workspace, opt
 	}
 
 	return result, nil
+}
+
+func RestartWorkspace(client *Client, name string, workspace config.Workspace, opts WorkspaceRestartOptions) (*WorkspaceStartResult, error) {
+	result := &WorkspaceStartResult{}
+	result.addMessage(WorkspaceStartOptions{OnMessage: opts.OnMessage}, "Restarting workspace: "+name)
+
+	startResult, err := StartWorkspace(client, name, workspace, WorkspaceStartOptions{
+		NoAttach:  true,
+		Force:     true,
+		OnMessage: opts.OnMessage,
+	})
+	result.Messages = append(result.Messages, startResult.Messages...)
+	if err != nil {
+		return result, err
+	}
+
+	result.addMessage(WorkspaceStartOptions{OnMessage: opts.OnMessage}, "Session recreated: "+name)
+	if opts.NoAttach {
+		result.addMessage(WorkspaceStartOptions{OnMessage: opts.OnMessage}, "Skipping attach because --no-attach was provided.")
+		return result, nil
+	}
+
+	return result, client.Attach(name)
 }
 
 func (r *WorkspaceStartResult) addMessage(opts WorkspaceStartOptions, message string) {

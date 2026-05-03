@@ -26,7 +26,7 @@ The goal is to replace repetitive project-specific tmux shell scripts with a sin
 
 The project is being developed in phases.
 
-Phase 8 workspace mutation commands have been implemented:
+Phase 9 lifecycle commands have been implemented:
 
 - Go module setup
 - Cobra CLI skeleton
@@ -42,11 +42,15 @@ Phase 8 workspace mutation commands have been implemented:
 - `twx workspace add <workspace>`
 - `twx workspace show <workspace>`
 - `twx workspace remove <workspace>`
+- `twx attach <workspace>`
+- `twx kill <workspace>`
+- `twx restart <workspace>`
 - YAML config structs, loading, and validation
 - Read-only tmux client wrapper
 - Workspace session/window creation from config
 - Safe runtime config initialization with backup-on-force
 - Workspace config mutation with backup-on-write
+- Workspace lifecycle commands for attach, kill, and restart
 - Basic docs
 - Examples placeholder
 - Local install script
@@ -77,9 +81,6 @@ twx workspace show <workspace>
 twx attach <workspace>
 twx kill <workspace>
 twx restart <workspace>
-twx workspace add <workspace>
-twx workspace remove <workspace>
-twx workspace show <workspace>
 twx add-window <workspace> <window>
 twx remove-window <workspace> <window>
 twx tpm status
@@ -98,10 +99,9 @@ The CLI should create and manage tmux sessions and windows from that config.
 
 Near-term roadmap:
 
-1. attach/kill/restart lifecycle commands
-2. window add/remove
-3. TPM status/install
-4. release packaging
+1. window add/remove/set-command
+2. TPM status/install
+3. release packaging
 
 ---
 
@@ -137,6 +137,9 @@ Be careful with commands that modify user state. Do not modify user files unless
 | `twx config init` | Yes — creates config file |
 | `twx workspace add <workspace>` | Yes — updates config file |
 | `twx workspace remove <workspace>` | Yes — updates config file |
+| `twx attach <workspace>` | No config writes; attaches to tmux session |
+| `twx kill <workspace>` | No config writes; may kill tmux session |
+| `twx restart <workspace>` | No config writes; may kill/recreate tmux session |
 | `twx add-window` | Yes — updates config file |
 | `twx tpm install` | Yes — may modify `~/.tmux.conf`, must back it up first |
 
@@ -145,6 +148,7 @@ Read-only tmux inspection commands must not create or modify tmux sessions.
 `twx start` is allowed to create tmux sessions/windows but must not modify config files or tmux config.
 `twx config init` may create config files. `twx config init --force` must back up before overwrite. `twx config init --print` must not write files.
 Workspace add/remove may modify config files. Workspace remove must not kill tmux sessions. Every config write should validate and back up existing config.
+Attach/kill/restart operate on tmux sessions. `twx kill` must not remove workspace config. `twx restart` may kill and recreate tmux sessions but must not modify config files.
 
 When writing files:
 
@@ -330,12 +334,9 @@ docs: update quick start
 
 Implement next phases in this order:
 
-1. `twx attach <workspace>`
-2. `twx kill <workspace>`
-3. `twx restart <workspace>`
-4. Window mutation commands — add-window, remove-window
-5. TPM status/install
-6. Release packaging
+1. Window mutation commands — add-window, remove-window, set-command
+2. TPM status/install
+3. Release packaging
 
 Do not skip directly to advanced features before config loading and start are stable.
 
